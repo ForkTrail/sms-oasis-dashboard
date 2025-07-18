@@ -14,16 +14,295 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      logs: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          event_type: Database["public"]["Enums"]["log_event_type"]
+          id: string
+          ip_address: unknown | null
+          metadata: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          event_type: Database["public"]["Enums"]["log_event_type"]
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          event_type?: Database["public"]["Enums"]["log_event_type"]
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          assigned_server: Database["public"]["Enums"]["server_type"] | null
+          available: boolean | null
+          created_at: string | null
+          id: string
+          is_global: boolean | null
+          name: string
+          price_per_use: number
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_server?: Database["public"]["Enums"]["server_type"] | null
+          available?: boolean | null
+          created_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          name: string
+          price_per_use: number
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_server?: Database["public"]["Enums"]["server_type"] | null
+          available?: boolean | null
+          created_at?: string | null
+          id?: string
+          is_global?: boolean | null
+          name?: string
+          price_per_use?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          key: string
+          type: Database["public"]["Enums"]["setting_type"] | null
+          updated_at: string | null
+          value: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          key: string
+          type?: Database["public"]["Enums"]["setting_type"] | null
+          updated_at?: string | null
+          value?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          key?: string
+          type?: Database["public"]["Enums"]["setting_type"] | null
+          updated_at?: string | null
+          value?: string | null
+        }
+        Relationships: []
+      }
+      sms_sessions: {
+        Row: {
+          created_at: string | null
+          delivery_status: Database["public"]["Enums"]["delivery_status"] | null
+          expires_at: string | null
+          id: string
+          messages: Json | null
+          phone_number: string | null
+          received_at: string | null
+          request_id: string | null
+          retry_count: number | null
+          server: Database["public"]["Enums"]["server_type"]
+          service_id: string
+          sms_count: number | null
+          status: Database["public"]["Enums"]["sms_session_status"] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          delivery_status?:
+            | Database["public"]["Enums"]["delivery_status"]
+            | null
+          expires_at?: string | null
+          id?: string
+          messages?: Json | null
+          phone_number?: string | null
+          received_at?: string | null
+          request_id?: string | null
+          retry_count?: number | null
+          server: Database["public"]["Enums"]["server_type"]
+          service_id: string
+          sms_count?: number | null
+          status?: Database["public"]["Enums"]["sms_session_status"] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          delivery_status?:
+            | Database["public"]["Enums"]["delivery_status"]
+            | null
+          expires_at?: string | null
+          id?: string
+          messages?: Json | null
+          phone_number?: string | null
+          received_at?: string | null
+          request_id?: string | null
+          retry_count?: number | null
+          server?: Database["public"]["Enums"]["server_type"]
+          service_id?: string
+          sms_count?: number | null
+          status?: Database["public"]["Enums"]["sms_session_status"] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_sessions_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sms_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          description: string | null
+          id: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          reference: string | null
+          status: Database["public"]["Enums"]["transaction_status"] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          payment_method: Database["public"]["Enums"]["payment_method"]
+          reference?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          payment_method?: Database["public"]["Enums"]["payment_method"]
+          reference?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          balance: number | null
+          created_at: string | null
+          email: string
+          id: string
+          is_admin: boolean | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          balance?: number | null
+          created_at?: string | null
+          email: string
+          id: string
+          is_admin?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          balance?: number | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_admin?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
+      log_event: {
+        Args: {
+          p_event_type: Database["public"]["Enums"]["log_event_type"]
+          p_user_id: string
+          p_description: string
+          p_ip_address?: unknown
+          p_metadata?: Json
+        }
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      delivery_status: "pending" | "completed" | "failed" | "expired"
+      log_event_type:
+        | "sms_request"
+        | "credit_deduction"
+        | "credit_addition"
+        | "payment_processed"
+        | "user_suspended"
+        | "session_expired"
+        | "admin_action"
+      payment_method:
+        | "paystack"
+        | "flutterwave"
+        | "bank_transfer"
+        | "admin_credit"
+      server_type: "server_1" | "server_2"
+      setting_type: "string" | "boolean" | "integer" | "json"
+      sms_session_status:
+        | "pending"
+        | "active"
+        | "completed"
+        | "failed"
+        | "expired"
+      transaction_status: "pending" | "completed" | "failed" | "refunded"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +429,33 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      delivery_status: ["pending", "completed", "failed", "expired"],
+      log_event_type: [
+        "sms_request",
+        "credit_deduction",
+        "credit_addition",
+        "payment_processed",
+        "user_suspended",
+        "session_expired",
+        "admin_action",
+      ],
+      payment_method: [
+        "paystack",
+        "flutterwave",
+        "bank_transfer",
+        "admin_credit",
+      ],
+      server_type: ["server_1", "server_2"],
+      setting_type: ["string", "boolean", "integer", "json"],
+      sms_session_status: [
+        "pending",
+        "active",
+        "completed",
+        "failed",
+        "expired",
+      ],
+      transaction_status: ["pending", "completed", "failed", "refunded"],
+    },
   },
 } as const

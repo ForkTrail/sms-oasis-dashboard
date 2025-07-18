@@ -1,1 +1,13 @@
 project_id = "ntssdpypienrepsamxoi"
+
+[functions.request-sms-number]
+verify_jwt = true
+
+[functions.check-sms-delivery]
+verify_jwt = true
+
+[functions.payment-webhook]
+verify_jwt = false
+
+[functions.admin-actions]
+verify_jwt = true
