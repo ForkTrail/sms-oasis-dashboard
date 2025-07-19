@@ -24,24 +24,31 @@ import {
   RefreshCw
 } from "lucide-react"
 
+import { useEffect } from "react"
+import { supabase } from "@/integrations/supabase/client"
+
 const Settings = () => {
-  const [theme, setTheme] = useState("light")
+  const [theme, setTheme] = useState("")
   const [rtlEnabled, setRtlEnabled] = useState(false)
   const [fullWidth, setFullWidth] = useState(false)
   const [sidebarCaptions, setSidebarCaptions] = useState(true)
-  const [primaryColor, setPrimaryColor] = useState("#8B5CF6")
+  const [primaryColor, setPrimaryColor] = useState("")
   const [notifications, setNotifications] = useState(true)
   const [emailAlerts, setEmailAlerts] = useState(true)
   const [autoRefresh, setAutoRefresh] = useState(true)
+  const [colorPresets, setColorPresets] = useState([])
 
-  const colorPresets = [
-    { name: "Purple", value: "#8B5CF6" },
-    { name: "Blue", value: "#3B82F6" },
-    { name: "Green", value: "#10B981" },
-    { name: "Red", value: "#EF4444" },
-    { name: "Orange", value: "#F97316" },
-    { name: "Pink", value: "#EC4899" },
-  ]
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const { data } = await supabase.from("settings").select("key, value")
+      if (data) {
+        setTheme(data.find(s => s.key === "theme_mode")?.value || "light")
+        setPrimaryColor(data.find(s => s.key === "primary_color")?.value || "#8B5CF6")
+        setColorPresets(JSON.parse(data.find(s => s.key === "color_presets")?.value || "[]"))
+      }
+    }
+    fetchSettings()
+  }, [])
 
   const handleSave = () => {
     // Save settings logic here

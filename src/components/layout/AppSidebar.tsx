@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom"
+import LogoutButton from "@/components/LogoutButton" // ✅ Import here
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
 import {
   LayoutDashboard,
   Smartphone,
@@ -29,6 +31,7 @@ const userMenuItems = [
   { title: "Get Number", url: "/get-number", icon: Smartphone },
   { title: "Purchase Credits", url: "/purchase-credits", icon: CreditCard },
   { title: "History", url: "/history", icon: History },
+  { title: "Profile", url: "/profile", icon: Users },
   { title: "Settings", url: "/settings", icon: Settings },
 ]
 
@@ -64,41 +67,48 @@ export function AppSidebar({ isAdmin = false }: AppSidebarProps) {
       : "hover:bg-muted/50"
 
   return (
-    <Sidebar className="border-r">
-      <SidebarContent className="bg-card">
-        <div className="p-4 border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-lg flex items-center justify-center">
-              <Smartphone className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h2 className="font-bold text-lg">SMS Oasis</h2>
-              <p className="text-xs text-muted-foreground">
-                {isAdmin ? "Admin Panel" : "Verification Hub"}
-              </p>
+    <Sidebar className="border-r min-h-screen flex flex-col justify-between">
+      <SidebarContent className="bg-card flex flex-col justify-between h-full">
+        <div>
+          <div className="p-4 border-b">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-glow rounded-lg flex items-center justify-center">
+                <Smartphone className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h2 className="font-bold text-lg">SMS Oasis</h2>
+                <p className="text-xs text-muted-foreground">
+                  {isAdmin ? "Admin Panel" : "Verification Hub"}
+                </p>
+              </div>
             </div>
           </div>
+
+          <SidebarGroup>
+            <SidebarGroupLabel>
+              {isAdmin ? "Admin Menu" : "Main Menu"}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {menuItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <NavLink to={item.url} className={getNavCls(item.url)}>
+                        <item.icon className="w-5 h-5" />
+                        <span>{item.title}</span>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
         </div>
 
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            {isAdmin ? "Admin Menu" : "Main Menu"}
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} className={getNavCls(item.url)}>
-                      <item.icon className="w-5 h-5" />
-                      <span>{item.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {/* ✅ LOGOUT BUTTON SECTION */}
+        <div className="p-4 border-t">
+          <LogoutButton />
+        </div>
       </SidebarContent>
     </Sidebar>
   )

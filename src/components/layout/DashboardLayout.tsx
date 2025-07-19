@@ -3,6 +3,8 @@ import { AppSidebar } from "./AppSidebar"
 import { Button } from "@/components/ui/button"
 import { User, Bell, LogOut } from "lucide-react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { supabase } from "@/integrations/supabase/client"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +19,12 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children, isAdmin = false }: DashboardLayoutProps) {
   const [isLoggedIn] = useState(true) // Demo state
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    navigate("/auth") // Redirect to login or landing page
+  }
 
   return (
     <SidebarProvider>
@@ -66,7 +74,7 @@ export function DashboardLayout({ children, isAdmin = false }: DashboardLayoutPr
                       <User className="w-4 h-4 mr-2" />
                       Profile Settings
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout
                     </DropdownMenuItem>
